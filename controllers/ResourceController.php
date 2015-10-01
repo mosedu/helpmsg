@@ -6,6 +6,7 @@ use Yii;
 use app\models\Resource;
 use app\models\ResourceSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -60,15 +61,19 @@ class ResourceController extends Controller
      */
     public function actionCreate()
     {
+        return $this->actionUpdate(0);
+/*
         $model = new Resource();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->res_id]);
+            return $this->redirect(['index', ]);
+//            return $this->redirect(['view', 'id' => $model->res_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
         }
+*/
     }
 
     /**
@@ -79,10 +84,25 @@ class ResourceController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        if( $id == 0 ) {
+            if( !Yii::$app->user->can('createResource') ) {
+                throw new ForbiddenHttpException();
+            }
+
+            $model = new Resource();
+            $model->loadDefaultValues();
+        }
+        else {
+            if( !Yii::$app->user->can('updateResource') ) {
+                throw new ForbiddenHttpException();
+            }
+
+            $model = $this->findModel($id);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->res_id]);
+            return $this->redirect(['index', ]);
+//            return $this->redirect(['view', 'id' => $model->res_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -98,7 +118,14 @@ class ResourceController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if( !Yii::$app->user->can('workResource') ) {
+            throw new ForbiddenHttpException();
+        }
+        /** @var Resource $model */
+        $model = $this->findModel($id);
+        $model->res_active = 0;
+        $model->save();
+//        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }

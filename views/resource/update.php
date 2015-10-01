@@ -5,10 +5,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Resource */
 
-$this->title = 'Update Resource: ' . ' ' . $model->res_id;
-$this->params['breadcrumbs'][] = ['label' => 'Resources', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->res_id, 'url' => ['view', 'id' => $model->res_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = $model->isNewRecord ? 'Создание ресурса' : ('Изменение ресурса: ' . ' ' . $model->res_name);
+$this->params['breadcrumbs'][] = ['label' => 'Ресурсы', 'url' => ['index']];
+if( !$model->isNewRecord ) {
+    $this->params['breadcrumbs'][] = ['label' => $model->res_name, 'url' => ['view', 'id' => $model->res_name]];
+}
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="resource-update">
 

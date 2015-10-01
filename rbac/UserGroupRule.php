@@ -22,8 +22,8 @@ class UserGroupRule extends Rule {
             $itemName = $item->name;
             $groups = Yii::$app->user->identity->groups;
 
-            Yii::info('UserGroupRule::execute() : groupId['.$itemName.'] = ' . print_r($groupId[$itemName], true));
-            Yii::info('UserGroupRule::execute() : groups = ' . print_r($groups, true));
+//            Yii::info('UserGroupRule::execute() : groupId['.$itemName.'] = ' . print_r($groupId[$itemName], true));
+//            Yii::info('UserGroupRule::execute() : groups = ' . print_r($groups, true));
 //            Yii::info('UserGroupRule::execute() : user = ' . $user . ' item = ' . $itemName . ' = ' . (isset($groups[$groupId[$itemName]]) ? 'true' : 'false'));
             return count(array_intersect(array_keys($groups), $groupId[$itemName])) > 0;
 //            return isset($groups[$groupId[$itemName]]);

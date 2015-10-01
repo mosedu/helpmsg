@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Resource */
 
-$this->title = $model->res_id;
-$this->params['breadcrumbs'][] = ['label' => 'Resources', 'url' => ['index']];
+$this->title = $model->res_name;
+$this->params['breadcrumbs'][] = ['label' => 'Ресурсы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="resource-view">
@@ -15,22 +15,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->res_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->res_id], [
+        <?= '' /* Html::a('Изменить', ['update', 'id' => $model->res_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->res_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]) */ ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'res_id',
+//            'res_id',
             'res_name',
-            'res_active',
+//            'res_active',
             'res_created',
         ],
     ]) ?>
