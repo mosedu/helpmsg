@@ -60,6 +60,8 @@ class TopicController extends Controller
      */
     public function actionCreate()
     {
+        return $this->actionUpdate(0);
+/*
         $model = new Topic();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -69,6 +71,7 @@ class TopicController extends Controller
                 'model' => $model,
             ]);
         }
+*/
     }
 
     /**
@@ -79,15 +82,23 @@ class TopicController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->tpc_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if( $id == 0 ) {
+            $model = new Topic();
         }
+        else {
+            $model = $this->findModel($id);
+        }
+
+        if ($model->load(Yii::$app->request->post()) ) {
+            if( $model->isNewRecord ? $model->appendTo($model->tpc_resource, $model->tpc_parent_id) : $model->save() ) {
+                return $this->redirect(['index', ]);
+//                return $this->redirect(['view', 'id' => $model->tpc_id]);
+            }
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

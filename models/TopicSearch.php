@@ -55,6 +55,8 @@ class TopicSearch extends Topic
             return $dataProvider;
         }
 
+        $query->orderBy('tpc_resource, tpc_lft');
+
         $query->andFilterWhere([
             'tpc_id' => $this->tpc_id,
             'tpc_resource' => $this->tpc_resource,

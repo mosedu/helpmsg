@@ -49,7 +49,16 @@ $user = Yii::$app->user;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}' . ($user->can('updateResource') ? ' {update}' : '') . ($user->can('workResource') ? ' {delete}' : ''),
+                'template' => '{view}'
+                    . ($user->can('updateResource') ? ' {update}' : '')
+                    . ($user->can('workResource') ? ' {delete}' : '')
+                    . ($user->can('createTopic') ? ' {createtopic}' : ''),
+                'buttons' => [
+                    'createtopic' => function ($url, $model) {
+                        return Html::a( '<span class="glyphicon glyphicon-plus"></span>', ['topic/create', 'resourceid'=>$model->res_id], // $url,
+                            ['title' => 'Добавить статью на ресурс ' . Html::encode($model->res_name), 'class'=>'btn btn-success showinmodal']);
+                    },
+                ],
                 'buttonOptions' => ['class' => 'btn btn-success'],
             ],
         ],

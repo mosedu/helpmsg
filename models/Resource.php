@@ -7,6 +7,8 @@ use yii\behaviors\AttributeBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 
+use app\models\Topic;
+
 /**
  * This is the model class for table "{{%resource}}".
  *
@@ -70,5 +72,14 @@ class Resource extends \yii\db\ActiveRecord
             'res_active' => 'Активен',
             'res_created' => 'Создан',
         ];
+    }
+
+    public function getTopics() {
+        return $this
+            ->hasMany(
+                Topic::className(),
+                ['tpc_resource' => 'res_id']
+            )
+            ->orderBy('tpc_lft');
     }
 }

@@ -9,6 +9,9 @@ use yii\grid\GridView;
 
 $this->title = 'Topics';
 $this->params['breadcrumbs'][] = $this->title;
+
+$user = Yii::$app->user;
+
 ?>
 <div class="topic-index">
 
@@ -23,20 +26,40 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
-            'tpc_id',
-            'tpc_resource',
+            [
+                'class' => 'yii\grid\DataColumn',
+                'attribute' => 'tpc_id',
+                'content' => function ($model, $key, $index, $column) use ($searchModel) {
+                    return $model->tpc_id . ' [' . $model->tpc_lft . ', ' . $model->tpc_rgt . ']';
+                },
+            ],
+//            'tpc_id',
+//            'tpc_resource',
             'tpc_level',
-            'tpc_lft',
-            'tpc_rgt',
-            // 'tpc_title',
+//            'tpc_lft',
+//            'tpc_rgt',
+             'tpc_title',
             // 'tpc_text:ntext',
             // 'tpc_active',
-            // 'tpc_created',
-            // 'tpc_updated',
+            'tpc_created',
+            'tpc_updated',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}'
+                    . ($user->can('updateTopic') ? ' {update}' : '')
+                    . ($user->can('hideTopic') ? ' {delete}' : '')
+                    . ($user->can('createTopic') ? ' {createtopic}' : ''),
+                'buttons' => [
+                    'createtopic' => function ($url, $model) {
+                        return Html::a( '<span class="glyphicon glyphicon-plus"></span>', ['topic/create', 'resourceid'=>$model->tpc_resource, 'parentid'=>$model->tpc_id], // $url,
+                            ['title' => 'Добавить дочернюю к ' . Html::encode($model->tpc_title), 'class'=>'btn btn-success showinmodal']);
+                    },
+                ],
+                'buttonOptions' => ['class' => 'btn btn-success'],
+            ],
         ],
     ]); ?>
 
