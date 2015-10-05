@@ -4,14 +4,16 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+// use yii\bootstrap\Nav;
+// use yii\bootstrap\NavBar;
+// use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-use yii\bootstrap\BootstrapThemeAsset;
+// use yii\bootstrap\BootstrapThemeAsset;
+use app\themes\semantic\Navbar;
+use app\themes\semantic\Nav;
+use app\themes\semantic\SemanticAsset;
 
-AppAsset::register($this);
-BootstrapThemeAsset::register($this);
+SemanticAsset::register($this);
 
 ?>
 <?php $this->beginPage() ?>
@@ -19,29 +21,32 @@ BootstrapThemeAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <link rel="icon" type="image/x-icon" href=" /favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/bookcase.png"/>
-</head>
     <?php $this->head() ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<div class="pusher">
+    <div class="ui inverted vertical masthead center aligned segment">
+
     <?php
-    NavBar::begin([
+    Navbar::begin(/*[
         'brandLabel' => 'My Company',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
-    ]);
+    ]*/);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'ui large secondary inverted pointing menu'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
@@ -55,22 +60,21 @@ BootstrapThemeAsset::register($this);
                 ],
         ],
     ]);
-    NavBar::end();
+    Navbar::end();
     ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= $content ?>
     </div>
+
+            <?= '' /*Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) */ ?>
+            <?= $content ?>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; ТемоЦентр <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <!-- p class="pull-right"><?= Yii::powered() ?></p -->
     </div>
 </footer>
 

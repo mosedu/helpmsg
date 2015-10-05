@@ -43,6 +43,19 @@ class ResourceController extends Controller
     }
 
     /**
+     * Displays resorce topics
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionTopics($id = 0)
+    {
+        return $this->render('topics', [
+            'model' => ($id > 0 ? $this->findModel($id) : null ),
+            'topicid' => Yii::$app->request->getQueryParam('topicid', -1),
+        ]);
+    }
+
+    /**
      * Displays a single Resource model.
      * @param integer $id
      * @return mixed
@@ -101,7 +114,8 @@ class ResourceController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', ]);
+            return $this->redirect(['resource/topics', 'id' => $model->res_id]);
+//            return $this->redirect(['index', ]);
 //            return $this->redirect(['view', 'id' => $model->res_id]);
         } else {
             return $this->render('update', [

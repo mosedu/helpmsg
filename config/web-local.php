@@ -8,17 +8,26 @@
 
 $config = [
     'components' => [
-        /*
-                'assetManager' => [
-                    'bundles' => [
-                        'yii\bootstrap\BootstrapAsset' => [
-                            'sourcePath' => null,
-                            'basePath' => '@webroot',
-                            'baseUrl' => '@web',
-                            'css' => ['css/custom-bootstrap.css'],
-                        ],
-                    ],
+        'view' => [
+            'theme' => [
+                'basePath' => '@app/themes/semantic',
+//                'baseUrl' => '@web/themes/semantic',
+                'pathMap' => [
+                    '@app/views' => '@app/themes/semantic',
                 ],
+            ],
+        ],
+        /*
+        'assetManager' => [
+            'bundles' => [
+                'yii\bootstrap\BootstrapAsset' => [
+                    'sourcePath' => null,
+                    'basePath' => '@webroot',
+                    'baseUrl' => '@web',
+                    'css' => ['css/custom-bootstrap.css'],
+                ],
+            ],
+        ],
         */
         'log' => [
             'targets' => [

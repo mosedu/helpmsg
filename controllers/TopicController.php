@@ -91,7 +91,8 @@ class TopicController extends Controller
 
         if ($model->load(Yii::$app->request->post()) ) {
             if( $model->isNewRecord ? $model->appendTo($model->tpc_resource, $model->tpc_parent_id) : $model->save() ) {
-                return $this->redirect(['index', ]);
+                return $this->redirect(['resource/topics', 'id' => $model->tpc_resource, 'topicid' => $model->tpc_id]);
+//                return $this->redirect(['index', ]);
 //                return $this->redirect(['view', 'id' => $model->tpc_id]);
             }
         }
