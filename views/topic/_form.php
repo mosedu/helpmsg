@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use vova07\imperavi\Widget;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Topic */
@@ -17,9 +20,9 @@ if( $model->isNewRecord ) {
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $model->isNewRecord ? $form->field($model, 'tpc_resource')->textInput() : '' ?>
+    <?= $model->isNewRecord ? $form->field($model, 'tpc_resource', ['template' => '{input}'])->hiddenInput() : '' ?>
 
-    <?= $model->isNewRecord ? $form->field($model, 'tpc_parent_id')->textInput() : '' ?>
+    <?= $model->isNewRecord ? $form->field($model, 'tpc_parent_id', ['template' => '{input}'])->hiddenInput() : '' ?>
 
     <?= '' // $form->field($model, 'tpc_level')->textInput() ?>
 
@@ -29,7 +32,23 @@ if( $model->isNewRecord ) {
 
     <?= $form->field($model, 'tpc_title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'tpc_text')->textarea(['rows' => 6]) ?>
+    <?= '' // $form->field($model, 'tpc_text')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'tpc_text')->widget(Widget::className(), [
+        'settings' => [
+            'lang' => 'ru',
+            'minHeight' => 200,
+            'pastePlainText' => true,
+            'buttons' => ['formatting', 'bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'link', 'alignment', 'image',], // 'outdent', 'indent',
+            'imageManagerJson' => Url::to(['/topic/images-get']),
+            'imageUpload' => Url::to(['/topic/image-upload']),
+            'plugins' => [
+//                'image',
+                'imagemanager',
+//                'clips',
+//                'fullscreen',
+            ]
+        ]
+    ]) ?>
 
     <?= '' // $form->field($model, 'tpc_active')->textInput() ?>
 

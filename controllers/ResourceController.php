@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
+use yii\helpers\Html;
 
 /**
  * ResourceController implements the CRUD actions for Resource model.
@@ -99,7 +102,7 @@ class ResourceController extends Controller
     {
         if( $id == 0 ) {
             if( !Yii::$app->user->can('createResource') ) {
-                throw new ForbiddenHttpException();
+                throw new ForbiddenHttpException('У Вас нет прав для создания ресурса.');
             }
 
             $model = new Resource();
@@ -107,10 +110,32 @@ class ResourceController extends Controller
         }
         else {
             if( !Yii::$app->user->can('updateResource') ) {
-                throw new ForbiddenHttpException();
+                throw new ForbiddenHttpException('У Вас нет прав для изменения ресурса.');
             }
 
             $model = $this->findModel($id);
+        }
+
+        if( Yii::$app->request->isAjax ) {
+            if ($model->load(Yii::$app->request->post())) {
+
+                $aValidate = ActiveForm::validate($model);
+                Yii::$app->response->format = Response::FORMAT_JSON;
+
+                if( count($aValidate) == 0 ) {
+                    if( !$model->save() ) {
+                        $aValidate[Html::getInputId($model, 'res_name')] = ['Error save to DB: ' . print_r($model->getErrors(), true)];
+                    }
+                }
+                return $aValidate;
+            } else {
+                return $this->renderAjax(
+                    '_form',
+                    [
+                        'model' => $model,
+                    ]
+                );
+            }
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

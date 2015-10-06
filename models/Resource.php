@@ -19,6 +19,8 @@ use app\models\Topic;
  */
 class Resource extends \yii\db\ActiveRecord
 {
+    public $topicCount;
+
     public function behaviors() {
         return [
             // дата создания ресурса

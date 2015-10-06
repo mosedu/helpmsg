@@ -27,6 +27,10 @@ use app\models\Resource;
  */
 class Topic extends \yii\db\ActiveRecord
 {
+    const UPLOAD_PATH = 'ufiles';
+    const UPLOAD_IMG_PATH = 'img';
+    const UPLOAD_FILE_PATH = 'file';
+
     public function behaviors() {
         return [
             // дата создания ресурса

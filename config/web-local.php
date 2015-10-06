@@ -8,7 +8,7 @@
 
 $config = [
     'components' => [
-        'view' => [
+/*        'view' => [
             'theme' => [
                 'basePath' => '@app/themes/semantic',
 //                'baseUrl' => '@web/themes/semantic',
@@ -17,6 +17,7 @@ $config = [
                 ],
             ],
         ],
+*/
         /*
         'assetManager' => [
             'bundles' => [

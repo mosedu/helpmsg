@@ -6,8 +6,14 @@ use Yii;
 use app\models\Topic;
 use app\models\TopicSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
+use yii\helpers\Html;
+
+use vova07\imperavi\actions\GetAction;
 
 /**
  * TopicController implements the CRUD actions for Topic model.
@@ -22,6 +28,23 @@ class TopicController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'images-get' => [
+                'class' => 'vova07\imperavi\actions\GetAction',
+                'url' => '//' . $_SERVER['HTTP_HOST'] . '/' . Topic::UPLOAD_PATH . '/' . Topic::UPLOAD_IMG_PATH,
+                'path' => Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . Topic::UPLOAD_PATH . DIRECTORY_SEPARATOR . Topic::UPLOAD_IMG_PATH,
+                'type' => GetAction::TYPE_IMAGES,
+            ],
+            'image-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadAction',
+                'url' => '//' . $_SERVER['HTTP_HOST'] . '/' . Topic::UPLOAD_PATH . '/' . Topic::UPLOAD_IMG_PATH,
+                'path' => '@webroot/' . Topic::UPLOAD_PATH . '/' . Topic::UPLOAD_IMG_PATH,
             ],
         ];
     }
@@ -83,10 +106,44 @@ class TopicController extends Controller
     public function actionUpdate($id)
     {
         if( $id == 0 ) {
+            if( !Yii::$app->user->can('createTopic') ) {
+                throw new ForbiddenHttpException('У Вас нет прав для создания страницы.');
+            }
+
             $model = new Topic();
+            $model->loadDefaultValues();
         }
         else {
+            if( !Yii::$app->user->can('updateTopic') ) {
+                throw new ForbiddenHttpException('У Вас нет прав для изменения страницы.');
+            }
+
             $model = $this->findModel($id);
+        }
+
+        if( Yii::$app->request->isAjax ) {
+            if ($model->load(Yii::$app->request->post())) {
+
+                $aValidate = ActiveForm::validate($model);
+                Yii::$app->response->format = Response::FORMAT_JSON;
+//                Yii::info('actionUpdate('.$id.')  aValidate = ' . print_r($aValidate, true));
+
+                if( count($aValidate) == 0 ) {
+                    if( $model->isNewRecord ? $model->appendTo($model->tpc_resource, $model->tpc_parent_id) : $model->save() ) {
+                    }
+                    else {
+                        $aValidate[Html::getInputId($model, 'tpc_text')] = ['Error save to DB: ' . print_r($model->getErrors(), true)];
+                    }
+                }
+                return $aValidate;
+            } else {
+                return $this->renderAjax(
+                    '_form',
+                    [
+                        'model' => $model,
+                    ]
+                );
+            }
         }
 
         if ($model->load(Yii::$app->request->post()) ) {
