@@ -29,6 +29,9 @@ $aLindOpt = ['style' => 'color: #888888; font-size: 8px;', ]; // 'class'=>'showi
             ->groupBy($stable . '.res_id')
             ->all();
 
+        if( count($a) == 0 ) {
+            echo '<p>Пока статей нет.</p>';
+        }
         foreach($a As $resource) {
             echo '<p>'
                 . Html::a(Html::encode($resource->res_name), ['resource/topics', 'id'=>$resource->res_id])
@@ -41,5 +44,8 @@ $aLindOpt = ['style' => 'color: #888888; font-size: 8px;', ]; // 'class'=>'showi
                 . '</p>';
         }
 
+    echo $user->can('createTopic') ? ('<p>'
+        . Html::a('Создать ресурс', ['resource/create', ])
+        . '</p>') : '';
     ?>
 </div>
