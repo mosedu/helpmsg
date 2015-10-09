@@ -68,6 +68,15 @@ $webConfig = [
     'id' => 'messages.tdd',
     'language' => 'ru',
     'components' => [
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+//                    '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                    '@app/views' => '@app/themes/adminlte'
+                ],
+            ],
+        ],
+
         'request' => [
             'cookieValidationKey' => '-JL7PpZ3CQpNWYc4uzWn_EI9t8s7NwlJ',
             'parsers' => [
