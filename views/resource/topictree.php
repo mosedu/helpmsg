@@ -53,7 +53,18 @@ function addItem(&$curEl, &$list, $curlevel) {
 
 $a = [];
 addItem($a, $list, 0);
-Yii::info(print_r($a, true));
+// Yii::info(print_r($a, true));
+
+if( !isset($topicid) ) {
+    $topicid = -1;
+}
+
+foreach($list As $ob) {
+    if(  $topicid == $ob->tpc_id ) {
+        $oTopic = $ob;
+    }
+}
+
 
 ?>
 <!-- div class="col-sm-3" -->
@@ -68,13 +79,23 @@ Yii::info(print_r($a, true));
 <?php
 
 $this->beginBlock('topiclist');
+echo dmstr\widgets\Menu::widget(
+    [
+        'options' => ['class' => 'sidebar-menu'],
+        'items' => array_merge(
+            [['label' => $resource->res_name, 'options' => ['class' => 'header']]],
+            $a['items']
+        )
+    ]
+);
+/** @var app\models\Topic $ob */
+    /*
     $oldLevel = -1;
     if( !isset($topicid) ) {
         $topicid = -1;
     }
 
     $id = array_reduce($list, function($val, $item) use ($topicid) { return (($val == -1) && ($item->tpc_id == $topicid)) ? $topicid : $val; }, -1);
-    /** @var app\models\Topic $ob */
     $liClass = '';
 
     foreach($list As $ob) {
@@ -112,6 +133,7 @@ $this->beginBlock('topiclist');
         echo str_repeat("\t", $oldLevel) . '</ul>' . ($oldLevel > 0 ? '</li>' : '') . "\n";
         $oldLevel--;
     }
+*/
 $this->endBlock();
 ?>
 

@@ -6,6 +6,10 @@ use app\models\Resource;
 <aside class="main-sidebar">
 
     <section class="sidebar">
+    <?= isset($this->blocks['topiclist']) ? $this->blocks['topiclist'] : '' ?>
+    </section>
+
+    <section class="sidebar">
 <?php /*
         <!-- Sidebar user panel -->
         <div class="user-panel">
@@ -90,6 +94,6 @@ foreach($aRes As $k=>$v) {
 
     </section>
 
-    <?= isset($this->blocks['topiclist']) ? $this->blocks['topiclist'] : '' ?>
+    <?= '' // isset($this->blocks['topiclist']) ? $this->blocks['topiclist'] : '' ?>
 
 </aside>
